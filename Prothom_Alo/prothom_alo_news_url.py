@@ -1,32 +1,127 @@
-import scrapy
-from scrapy.crawler import CrawlerProcess
+# ittefaq_tcb_link_collector.py
 
-class LinkSpider(scrapy.Spider):
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
+import time, json
 
-    name = "link_spider"
-    visited_urls = []
+# Function to scrape the given URLs and save the output links to a JSON file
+def scrape_links(output_file_name, urls_to_scrape):
+    # Configure ChromeDriver
+    chrome_options = Options()
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    driver = webdriver.Chrome(service=Service(), options=chrome_options)
+    
+    # Scroll down the page
+    def scroll_down():
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(1)  # Wait for content to load after scrolling
+    
+    # Click the "See More" button until it no longer appears
+    def click_see_more_button():
+        while True:
+            try:
+                # Scroll down first to ensure the "See More" button is visible
+                scroll_down()
 
-    custom_settings = {
-        'FEED_FORMAT': 'json',
-        'FEED_URI': 'C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Prothom_Alo\\news_url.json',
-        'FEED_EXPORT_INDENT': 4,
-        'LOG_LEVEL': 'DEBUG',
-        'CONCURRENT_REQUESTS': 1,  # Limit to one request at a time
-        'FEED_EXPORT_ENCODING': 'utf-8',
-        'DEFAULT': str,
+                # Wait for the button to be clickable
+                wait = WebDriverWait(driver, 10)
+                see_more_button = wait.until(EC.element_to_be_clickable(
+                    (By.XPATH, '//*[@id="ajax_load_more_687_btn"]')
+                ))
+
+                try:
+                    # Attempt to click the button
+                    see_more_button.click()
+                    print("Clicked 'See More' button.")
+                    time.sleep(2)  # Wait for more content to load
+                except ElementClickInterceptedException:
+                    # If click is intercepted, scroll a bit more and retry
+                    print("Click intercepted, scrolling and retrying...")
+                    scroll_down()
+                    see_more_button.click()
+
+            except (TimeoutException, NoSuchElementException):
+                # If no more "See More" button is found, break the loop
+                print("No more 'See More' button found.")
+                break
+    
+    # Extract links from both types of card elements
+    # Function to extract links from both types of card elements
+    def extract_links():
+        links = set()  # Use a set to avoid duplicates
         
-    }
-    start_urls = [
+        card_elements = driver.find_elements(By.CSS_SELECTOR, 'div.card-with-image-zoom > h3 > a ')
+
+        print(len(card_elements))
+        for card in card_elements:
+            link = card.get_attribute('href')
+            if link:
+                links.add(link)
+
+        return links  # Return the unique links as a set
+
+    # Collect all unique links across all pages
+    all_links = set()
+    
+    for url in urls_to_scrape:
+        print(f"Processing: {url}")
+        # Open the website
+        driver.get(url)
+        driver.maximize_window()
+
+        # Wait for the page to fully load
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.TAG_NAME, "a")))
+
+        # Step 1: Click all "See More" buttons
+        click_see_more_button()
+
+        # Step 2: Extract all the links from the loaded content
+        links_data = extract_links()
+        all_links.update(links_data)  # Update the set to ensure all links are unique
+    
+    # Step 3: Save the extracted unique links to a JSON file
+    unique_links = [{"url": link} for link in all_links]  # Convert the set to a list of dicts
+    try:
+        with open(output_file_name, 'r', encoding='utf-8') as file:
+            existing_data = json.load(file)
+    except FileNotFoundError:
+        existing_data = []  # Initialize empty if file doesn't exist
+
+    # Extract only new URLs not already in the file
+    existing_urls = {item['url'] for item in existing_data}
+    filtered_new_data = [item for item in unique_links if item['url'] not in existing_urls]
+
+    # Append new data to existing data and write back to JSON
+    existing_data.extend(filtered_new_data)
+    with open(output_file_name, 'w', encoding='utf-8') as f:
+        json.dump(existing_data, f, ensure_ascii=False, indent=4)
+
+    print(f"Saved {len(unique_links)} unique links to {output_file_name}")
+
+    
+
+    # Close the browser when done
+    driver.quit()
+
+# Example usage:
+
+start_urls = [
         
         #national
-        'https://www.prothomalo.com/bangladesh',
-        'https://www.prothomalo.com/bangladesh/capital',
-        'https://www.prothomalo.com/bangladesh/district',
-        'https://www.prothomalo.com/bangladesh/coronavirus',
-        'https://www.prothomalo.com/bangladesh/environment',
+        # 'https://www.prothomalo.com/bangladesh',
+        # 'https://www.prothomalo.com/bangladesh/capital',
+        # 'https://www.prothomalo.com/bangladesh/district',
+        # 'https://www.prothomalo.com/bangladesh/coronavirus',
+        # 'https://www.prothomalo.com/bangladesh/environment',
 
-        #INTERNATIONAL
-        'https://www.prothomalo.com/world',
+        # #INTERNATIONAL
+        # 'https://www.prothomalo.com/world',
         # 'https://www.prothomalo.com/collection/palestine-israel-conflict',
         # 'https://www.prothomalo.com/topic/রাশিয়া-ইউক্রেন-সংঘাত',
         # 'https://www.prothomalo.com/world/india',
@@ -133,71 +228,9 @@ class LinkSpider(scrapy.Spider):
 
         # 'https://www.prothomalo.com/lifestyle/health',
 
-        'https://www.prothomalo.com/lifestyle/travel',
+        # 'https://www.prothomalo.com/lifestyle/travel',
+
+        'https://www.prothomalo.com/politics',
     ]
 
-
-    def parse(self, response):
-        # Extract all news articles on the page 
-        # news_items = response.css('div > div._9nRb0.bottom-space > div > div.Ib8Zz > div.wide-story-card.xkXol.HLT9m > div > div.story-data.KlAp7 > div > div > h3 > a')  # Adjust the selector based on the HTML structure
-        # news_type = self.get_news_type(response.url)
-        # # sub_news_type = self.get_sub_category(response.url)
-        # print(news_items,"===========================================================")
-        # for news in news_items:
-        #     yield {
-        #         'url': response.urljoin(news.css('::attr(href)').get()),  # Extract the full link
-        #         'type': news_type
-                
-        #     }
-        news_links = response.css('a[href^="/bangladesh/"]::attr(href)').getall()
-        
-        # Yielding full URLs
-        for link in news_links:
-            yield {
-                'url': response.urljoin(link)  # Join to form full URL
-            }
-    def get_news_type(self, url):
-        if 'bangladesh' in url:
-            return 'national'
-        
-        elif 'politics' in url:
-            return 'politics'
-        
-        elif 'world-news' in url:
-            return 'international'
-        
-        elif 'sports' in url:
-            return 'sports'
-        elif 'entertainment' in url:
-            return 'entertainment'
-        
-        elif 'business' in url:
-            return 'business'
-        
-        elif 'lifestyle' in url:
-            return 'lifestyle'
-        elif 'tech' in url:
-            return 'tech'
-        elif 'opinion' in url:
-            return 'opinion'
-        elif 'law-and-court' in url:
-            return 'law-and-court'
-        elif 'education' in url:
-            return 'education'
-        elif 'jobs' in url:
-            return 'jobs'
-        elif 'probash' in url:
-            return 'probash'
-        elif 'literature' in url:
-            return 'literature'
-        else:
-            return 'general'
-
-        # Check for pagination (if multiple pages)
-        # next_page = response.css('a.next::attr(href)').get()  # Adjust based on the next page selector
-        # if next_page:
-        #     yield scrapy.Request(url=response.urljoin(next_page), callback=self.parse)
-
-process = CrawlerProcess()
-process.crawl(LinkSpider)
-process.start()
+scrape_links("C:\\Users\\arwen\\Desktop\\Newspaper Scraping\\Spectrum_IT\\Prothom_Alo\\prothom_alo_news_links.json", start_urls)

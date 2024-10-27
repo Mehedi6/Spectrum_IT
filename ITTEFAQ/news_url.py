@@ -20,7 +20,7 @@ class LinkSpider(scrapy.Spider):
         'https://www.ittefaq.com.bd/jobs',
         'https://www.ittefaq.com.bd/probash',
         'https://www.ittefaq.com.bd/literature',   
-       
+        'https://www.ittefaq.com.bd/topic/%E0%A6%AC%E0%A6%BF%E0%A6%B6%E0%A7%87%E0%A6%B7-%E0%A6%B8%E0%A6%82%E0%A6%AC%E0%A6%BE%E0%A6%A6'
     
 
     ]
