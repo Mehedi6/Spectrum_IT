@@ -102,6 +102,7 @@ class NewsScraper:
     def parse_bengali_date(self, bengali_date_str):
         # Remove the 'প্রকাশ' part and strip any extra whitespace
         bengali_date_str = bengali_date_str.replace('প্রকাশ: ', '').strip()
+        bengali_date_str = bengali_date_str.replace('আপডেট: ', '').strip()
         
         # Convert Bengali numbers to English
         english_date_str = self.bengali_to_english(bengali_date_str)
@@ -225,12 +226,12 @@ class NewsScraper:
             
             news_data['published_date'] = published_date.isoformat() if published_date else None
 
-            updated_date_text = driver.find_element(By.CSS_SELECTOR, 'div.time-social-share-wrapper._24WTx > div.xuoYp > time').text
-            updated_date_text = updated_date_text.replace("আপডেট: ","")
+            # updated_date_text = driver.find_element(By.CSS_SELECTOR, 'div.time-social-share-wrapper._24WTx > div.xuoYp > time').text
+            # updated_date_text = updated_date_text.replace("আপডেট: ","")
             
-            # Parse the dates to ISO format using helper functions
-            updated_date = self.parse_bengali_date(updated_date_text.strip())
-            news_data['updated_date'] = updated_date.isoformat() if updated_date else None
+            # # Parse the dates to ISO format using helper functions
+            # updated_date = self.parse_bengali_date(updated_date_text.strip())
+            # news_data['updated_date'] = updated_date.isoformat() if updated_date else None
         except Exception as e:
             print(f"Error extracting dates: {e}")
             news_data['published_date'] = None

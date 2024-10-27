@@ -18,9 +18,8 @@
         "news_type": "national",
         "media_type": "newspaper",
         "published_date": "2024-10-27T17:02:00",
-        "updated_date": "2024-10-27T17:02:00",
         "source": "প্রথম আলো",
-        "last_scraped": "2024-10-27T17:26:37.546524"
+        "last_scraped": "2024-10-27T18:09:16.998534"
     },
     {
         "url": "https://www.prothomalo.com/world/south-america/2ldqhfkjt6",
@@ -43,9 +42,8 @@
         "news_type": "international",
         "media_type": "newspaper",
         "published_date": "2024-09-12T13:46:00",
-        "updated_date": "2024-09-12T13:46:00",
         "source": "প্রথম আলো",
-        "last_scraped": "2024-10-27T17:26:49.009520"
+        "last_scraped": "2024-10-27T18:09:28.474719"
     },
     {
         "url": "https://www.prothomalo.com/business/উদ্যোক্তা/v1s2uf7hn4",
@@ -63,9 +61,8 @@
         "news_subcategory": "উদ্যোক্তা",
         "news_type": "economics",
         "media_type": "newspaper",
-        "published_date": null,
-        "updated_date": "2024-10-07T14:07:00",
+        "published_date": "2024-10-07T14:07:00",
         "source": "প্রথম আলো",
-        "last_scraped": "2024-10-27T17:27:02.496520"
+        "last_scraped": "2024-10-27T18:09:42.100688"
     }
 ]
