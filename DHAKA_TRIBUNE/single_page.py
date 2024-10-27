@@ -42,7 +42,7 @@ class NewsScraper:
 
     def parse_bengali_date(self, bengali_date_str):
         # Remove the 'প্রকাশ' part and strip any extra whitespace
-        bengali_date_str = bengali_date_str.replace('প্রকাশ: ', '').strip()
+        bengali_date_str = bengali_date_str.replace('প্রকাশ : ', '').strip()
         
         # Convert Bengali numbers to English
         english_date_str = self.bengali_to_english(bengali_date_str)
@@ -57,7 +57,7 @@ class NewsScraper:
         
         # Define the format for parsing (using 24-hour format)
         try:
-            return datetime.strptime(english_date_str, "%d %B %Y, %H:%M")
+            return datetime.strptime(english_date_str, "%d %B %Y, %I:%M %p")
         except ValueError as e:
             print(f"Error parsing date: {e}")
             return None  # or handle error accordingly
@@ -91,7 +91,7 @@ class NewsScraper:
 
         # Extract image URL using CSS selector
         try:
-            image_url = driver.find_elements(By.CSS_SELECTOR, '#adf-overlay')
+            image_url = driver.find_elements(By.CSS_SELECTOR, '#widget_564 > div > div > div > div > div > div > div.row.detail_holder > div > div > div.featured_image_outer > div > span > a > img')
             image_url = image_url[0].get_attribute('src')
             news_data['image_urls'] = image_url
         except Exception as e:
@@ -102,14 +102,16 @@ class NewsScraper:
         try:
             content_element = driver.find_elements(By.CSS_SELECTOR, 'div.content_detail_content_inner div p')
             content = "\n".join([elem.text for elem in content_element])
+            
             news_data['content'] = content
+    
         except Exception as e:
             print(f"Error extracting content: {e}")
             news_data['content'] = None
 
         # Extract author
         try:
-            author_element = driver.find_element(By.XPATH, '//*[@id="widget_322"]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[1]/div/div[1]/div')
+            author_element = driver.find_element(By.XPATH, '//*[@id="widget_564"]/div/div/div/div/div/div/div[2]/div/div/div[3]/div/div[1]/div/div[1]/div/div/span/span/a/span')
             news_data['author'] = author_element.text.strip()
         except Exception as e:
             print(f"Error extracting author: {e}")
@@ -156,21 +158,26 @@ class NewsScraper:
 
         # Extract published date and updated date
         try:
-            published_date_text = driver.find_element(By.CSS_SELECTOR, '#widget_322 > div > div > div > div.content_detail_outer > div.content_detail_inner > div.content_detail_left > div > div > div.row.detail_holder > div > div > div.additional_info_container > div > div.each_row.time > span.tts_time').text
+            published_date_text = driver.find_element(By.CSS_SELECTOR, '#widget_564 > div > div > div > div > div > div > div.row.detail_holder > div > div > div.content_detail_small_width > div > div.additional_info_container > div > div.each_row.time > span.tts_time.published_time').text
             published_date_text = published_date_text.replace("প্রকাশ : ","")
             
             # Parse the dates to ISO format using helper functions
             published_date = self.parse_bengali_date(published_date_text.strip())
-            
-            
             news_data['published_date'] = published_date.isoformat() if published_date else None
+
+            updated_date_text = driver.find_element(By.CSS_SELECTOR, '#widget_564 > div > div > div > div > div > div > div.row.detail_holder > div > div > div.content_detail_small_width > div > div.additional_info_container > div > div.each_row.time > span.modified_time').text
+            updated_date_text = updated_date_text.replace("আপডেট : ","")
+            
+            # Parse the dates to ISO format using helper functions
+            updated_date = self.parse_bengali_date(updated_date_text.strip())
+            news_data['updated_date'] = updated_date.isoformat() if updated_date else None
         except Exception as e:
             print(f"Error extracting dates: {e}")
             news_data['published_date'] = None
             news_data['updated_date'] = None
 
         # Add the source and last_scraped time
-        news_data['source'] = "ইত্তেফাক"
+        news_data['source'] = "Dhaka Tribune"
         news_data['last_scraped'] = datetime.now().isoformat()
 
         # Close the browser when done
@@ -181,7 +188,7 @@ class NewsScraper:
 # print(scraper.scrape_news_data("https://www.ittefaq.com.bd/687513/%E0%A6%9F%E0%A6%BF%E0%A6%B8%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0-%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF-%E0%A6%B8%E0%A7%9F%E0%A6%BE%E0%A6%AC%E0%A6%BF%E0%A6%A8-%E0%A6%A4%E0%A7%87%E0%A6%B2-%E0%A6%93-%E0%A6%AE%E0%A6%B8%E0%A7%81%E0%A6%B0-%E0%A6%A1%E0%A6%BE%E0%A6%B2-%E0%A6%95%E0%A6%BF%E0%A6%A8%E0%A6%9B%E0%A7%87-%E0%A6%B8%E0%A6%B0%E0%A6%95%E0%A6%BE%E0%A6%B0"))
 
 # Loading unique links
-with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\ITTEFAQ\\ittefaq_news_url.json') as f:
+with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\DHAKA_TRIBUNE\\url.json') as f:
     d = json.load(f)
 
 all_data = []
@@ -195,7 +202,7 @@ for i in d:
 
  
 
-with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\ITTEFAQ\\ittefaq_all_data.json", 'w', encoding='utf-8') as f:
+with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\DHAKA_TRIBUNE\\data.json", 'w', encoding='utf-8') as f:
     json.dump(all_data, f, ensure_ascii=False, indent=4)
 
 print(f"Saved {len(all_data)} unique links to ittefaq_data.json")

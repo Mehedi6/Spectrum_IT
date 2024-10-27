@@ -5,14 +5,23 @@ class LinkSpider(scrapy.Spider):
 
     name = "link_spider"
     start_urls = [
-        'https://www.prothomalo.com/business/%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A7%8B%E0%A6%95%E0%A7%8D%E0%A6%A4%E0%A6%BE'
-        # ''
+
+        #DHAKA_TRIBUNE
+        'https://bangla.dhakatribune.com/bangladesh',
+        'https://bangla.dhakatribune.com/politics',
+        'https://bangla.dhakatribune.com/international',
+        'https://bangla.dhakatribune.com/economy',
+        'https://bangla.dhakatribune.com/opinion',
+        'https://bangla.dhakatribune.com/sport',
+        'https://bangla.dhakatribune.com/entertainment',
+        'https://bangla.dhakatribune.com/technology',
+        'https://bangla.dhakatribune.com/others',
 
 
     ]
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': 'ittefaq_news_url.json',
+        'FEED_URI': 'C:\\Users\\arwen\\Desktop\\Newspaper Scraping\\Spectrum_IT\\DHAKA_TRIBUNE\\dt_url.json',
         'FEED_EXPORT_INDENT': 4,
         'LOG_LEVEL': 'DEBUG',
         'CONCURRENT_REQUESTS': 1,  # Limit to one request at a time
@@ -24,48 +33,66 @@ class LinkSpider(scrapy.Spider):
 
     def parse(self, response):
         # Extract all news articles on the page 
-        news_items = response.css('div.info.has_ai > div.title_holder > div > h2 > a')  # Adjust the selector based on the HTML structure
+        
+        # news_items_1 = response.css('div.info.has_ai > div > div.title_holder > div > h2 > a')  # Adjust the selector based on the HTML structure
+        news_items_2 =response.css('div > div.info > div > div > div > h2 > a')
+        
         news_type = self.get_news_type(response.url)
-        for news in news_items:
+        # for news in news_items_1:
+        #     yield {
+        #         'url': response.urljoin(news.css('::attr(href)').get()),  # Extract the full link
+        #         'type': news_type
+                
+        #     }
+        for news in news_items_2:
             yield {
                 'url': response.urljoin(news.css('::attr(href)').get()),  # Extract the full link
                 'type': news_type
                 
             }
     def get_news_type(self, url):
-        if 'national' in url:
+        if 'bangladesh' in url:
             return 'national'
         
         elif 'politics' in url:
             return 'politics'
         
-        elif 'world-news' in url:
+        elif 'international' in url:
             return 'international'
         
-        elif 'sports' in url:
+        elif 'sport' in url:
             return 'sports'
+        
         elif 'entertainment' in url:
             return 'entertainment'
         
-        elif 'business' in url:
+        elif 'economy' in url:
             return 'business'
         
         elif 'lifestyle' in url:
             return 'lifestyle'
-        elif 'tech' in url:
-            return 'tech'
+        
+        elif 'technology' in url:
+            return 'technology'
+        
         elif 'opinion' in url:
             return 'opinion'
+        
         elif 'law-and-court' in url:
             return 'law-and-court'
+        
         elif 'education' in url:
             return 'education'
+        
         elif 'jobs' in url:
             return 'jobs'
+        
         elif 'probash' in url:
             return 'probash'
+        
         elif 'literature' in url:
             return 'literature'
+        
         else:
             return 'general'
 
