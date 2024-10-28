@@ -22,6 +22,8 @@ class NewsScraper:
                 return ['national','coronavirus'] 
             elif 'environment' in url:
                 return ['national','environment']
+            else:
+                return ['national', 'general']
         if 'crime' in url:
             return ['crime', 'crime']
         if 'politics' in url:
@@ -33,7 +35,7 @@ class NewsScraper:
                 return ['international', 'pakistan'] 
             elif 'china' in url:
                 return ['international', 'china']
-            elif 'middle-east' in url:\
+            elif 'middle-east' in url:
                 return ['international', 'middle-east']
             elif 'usa' in url:
                 return ['international', 'usa']
@@ -43,6 +45,8 @@ class NewsScraper:
                 return ['international', 'africa']
             elif 'south-america' in url:
                 return ['international', 'south-america']
+            else:
+                return ['international', 'general']
         if 'business' in url:
             if 'market' in url:
                 return ['economics', 'market']
@@ -64,6 +68,8 @@ class NewsScraper:
                 return ['economics', 'corporate']
             elif 'budget-2024-25' in url:
                 return ['economics', 'budget-2024-25']
+            else:
+                return ['economics', 'general']
         if 'opinion' in url:
             if 'editorial' in url:
                 return ['opinion', 'editorial']
@@ -77,6 +83,8 @@ class NewsScraper:
                 return ['opinion', 'reaction']
             elif 'letter' in url:
                 return ['opinion','letter']
+            else:
+                return ['opinion', 'general']
         if 'sports' in url:
             if 'cricket' in url:
                 return ['sports', 'cricket']
@@ -88,6 +96,8 @@ class NewsScraper:
                 return ['sports', 'other-sports']
             elif 'sports-interview' in url:
                 return ['sports','sports-interview']
+            else:
+                return ['sports', 'general']
         if 'entertainment' in url:
             if 'tv' in url:
                 return ['entertainment', 'tv']
@@ -109,15 +119,19 @@ class NewsScraper:
                 return ['entertainment', 'drama']
             elif 'entertainment-interview' in url:
                 return ['entertainment', 'entertainment-interview']
+            else:
+                return ['entertainment', 'general']
         if 'chakri' in url:
             if 'chakri-news' in url:
-                return ['chakri', 'chakri-news']
+                return ['job', 'chakri-news']
             elif 'employment' in url:
-                return ['chakri', 'employment']
+                return ['job', 'employment']
             elif 'chakri-suggestion' in url:
-                return ['chakri', 'chakri-suggestion']
+                return ['job', 'chakri-suggestion']
             elif 'chakri-interview' in url:
-                return ['chakri', 'chakri-interview']
+                return ['job', 'chakri-interview']
+            else:
+                return ['job', 'general']
         if 'lifestyle' in url:
             if 'relation' in url:
                 return ['lifestyle', 'relation']
@@ -135,6 +149,8 @@ class NewsScraper:
                 return ['lifestyle', 'recipe']
             elif 'shopping' in url:
                 return ['lifestyle', 'shopping']
+            else:
+                return ['lifestyle', 'general']
         if 'technology' in url:
             if 'gadget' in url:
                 return ['technology', 'gadget']
@@ -148,6 +164,8 @@ class NewsScraper:
                 return ['technology', 'freelancing']
             elif 'artificial-intelligence' in url:
                 return ['technology', 'artificial-intelligence']
+            else:
+                return ['technology', 'general']
         if 'science' in url:
             return ['science', 'science']
         if 'education' in url:
@@ -163,29 +181,34 @@ class NewsScraper:
                 return ['education', 'higher-education']
             elif 'campus' in url:
                 return ['education', 'campus']
+            else:
+                return ['education', 'general']
         if 'onnoalo' in url:
             if 'poem' in url:
-                return ['onnoalo', 'poem']
+                return ['literature', 'poem']
             elif 'stories' in url:
-                return ['onnoalo', 'stories']
+                return ['literature', 'stories']
             elif 'treatise' in url:
-                return ['onnoalo', 'treatise']
+                return ['literature', 'treatise']
             elif 'books' in url:
-                return ['onnoalo', 'books']
+                return ['literature', 'books']
             elif 'arts' in url:
-                return ['onnoalo', 'arts']
+                return ['literature', 'arts']
             elif 'interview' in url:
-                return ['onnoalo', 'interview']
+                return ['literature', 'interview']
             elif 'others' in url:
-                return ['onnoalo', 'others']
+                return ['literature', 'others']
             elif 'translation' in url:
-                return ['onnoalo', 'translation']
+                return ['literature', 'translation']
             elif 'prose' in url:
-                return ['onnoalo', 'prose']
+                return ['literature', 'prose']
             elif 'children' in url:
-                return ['onnoalo', 'children']
+                return ['literature', 'children']
+            else:
+                return ['literature', 'general']
         if 'travel' in url:
             return ['travel', 'travel']
+        
         
             
             
@@ -333,9 +356,12 @@ class NewsScraper:
         # Extract news subcategory and type
         news_data['keywords'] = driver.find_element(By.CSS_SELECTOR, 'meta[name="keywords"]').get_attribute('content').split(',')
         category = self.get_news_category(url) 
-        print(category)
-        news_data['news_subcategory'] = category[1] # Hardcoding as per your requirement
-        news_data['news_type'] = category[0]  # Hardcoding as per your requirement
+        try:
+            news_data['news_subcategory'] = category[1] # Hardcoding as per your requirement
+            news_data['news_type'] = category[0]  # Hardcoding as per your requirement
+        except Exception as e:
+            news_data['news_subcategory'] = None # Hardcoding as per your requirement
+            news_data['news_type'] = None
         news_data['media_type'] = 'newspaper'
 
         # Extract published date and updated date
@@ -347,16 +373,18 @@ class NewsScraper:
             published_date = self.parse_bengali_date(published_date_text.strip())
             
             news_data['published_date'] = published_date.isoformat() if published_date else None
-
-            # updated_date_text = driver.find_element(By.CSS_SELECTOR, 'div.time-social-share-wrapper._24WTx > div.xuoYp > time').text
-            # updated_date_text = updated_date_text.replace("আপডেট: ","")
-            
-            # # Parse the dates to ISO format using helper functions
-            # updated_date = self.parse_bengali_date(updated_date_text.strip())
-            # news_data['updated_date'] = updated_date.isoformat() if updated_date else None
         except Exception as e:
             print(f"Error extracting dates: {e}")
             news_data['published_date'] = None
+        try:
+            updated_date_text = driver.find_element(By.CSS_SELECTOR, 'div.time-social-share-wrapper._24WTx > div.xuoYp > time').text
+            updated_date_text = updated_date_text.replace("আপডেট: ","")
+            
+            # Parse the dates to ISO format using helper functions
+            updated_date = self.parse_bengali_date(updated_date_text.strip())
+            news_data['updated_date'] = updated_date.isoformat() if updated_date else None
+        except Exception as e:
+            print(f"Error extracting dates: {e}")
             news_data['updated_date'] = None
 
         # Add the source and last_scraped time
@@ -371,7 +399,7 @@ class NewsScraper:
 # print(scraper.scrape_news_data("https://www.ittefaq.com.bd/687513/%E0%A6%9F%E0%A6%BF%E0%A6%B8%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0-%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF-%E0%A6%B8%E0%A7%9F%E0%A6%BE%E0%A6%AC%E0%A6%BF%E0%A6%A8-%E0%A6%A4%E0%A7%87%E0%A6%B2-%E0%A6%93-%E0%A6%AE%E0%A6%B8%E0%A7%81%E0%A6%B0-%E0%A6%A1%E0%A6%BE%E0%A6%B2-%E0%A6%95%E0%A6%BF%E0%A6%A8%E0%A6%9B%E0%A7%87-%E0%A6%B8%E0%A6%B0%E0%A6%95%E0%A6%BE%E0%A6%B0"))
 
 # Loading unique links
-with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Prothom_Alo\\sample_news_url.json') as f:
+with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Prothom_Alo\\prothom_alo_news_links.json') as f:
     d = json.load(f)
 
 all_data = []
@@ -382,6 +410,8 @@ for i in d:
     scraper = NewsScraper()
     print(url)
     url = urllib.parse.unquote(url)
+    if 'video' in url:
+        continue
     news_data = scraper.scrape_news_data(url, type)
     all_data.append(news_data)
 
