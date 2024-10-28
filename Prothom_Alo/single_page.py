@@ -64,6 +64,128 @@ class NewsScraper:
                 return ['economics', 'corporate']
             elif 'budget-2024-25' in url:
                 return ['economics', 'budget-2024-25']
+        if 'opinion' in url:
+            if 'editorial' in url:
+                return ['opinion', 'editorial']
+            elif 'column' in url:
+                return ['opinion', 'column']
+            elif 'interview' in url:
+                return ['opinion', 'interview']
+            elif 'memoir' in url:
+                return ['opinion', 'memoir']
+            elif 'reaction' in url:
+                return ['opinion', 'reaction']
+            elif 'letter' in url:
+                return ['opinion','letter']
+        if 'sports' in url:
+            if 'cricket' in url:
+                return ['sports', 'cricket']
+            elif 'football' in url:
+                return ['sports', 'football']
+            elif 'tennis' in url:
+                return ['sports','tennis']
+            elif 'other-sports' in url:
+                return ['sports', 'other-sports']
+            elif 'sports-interview' in url:
+                return ['sports','sports-interview']
+        if 'entertainment' in url:
+            if 'tv' in url:
+                return ['entertainment', 'tv']
+            elif 'ott' in url:
+                return ['entertainment', 'ott']
+            elif 'dhallywood' in url:
+                return ['entertainment', 'dhallywood']
+            elif 'tollywood' in url:
+                return ['entertainment', 'tollywood']
+            elif 'bollywood' in url:
+                return ['entertainment', 'bollywood']
+            elif 'hollywood' in url:
+                return ['entertainment', 'hollywood']
+            elif 'world-cinema' in url:
+                return ['entertainment', 'world-cinema']
+            elif 'song' in url:
+                return ['entertainment', 'song']
+            elif 'drama' in url:
+                return ['entertainment', 'drama']
+            elif 'entertainment-interview' in url:
+                return ['entertainment', 'entertainment-interview']
+        if 'chakri' in url:
+            if 'chakri-news' in url:
+                return ['chakri', 'chakri-news']
+            elif 'employment' in url:
+                return ['chakri', 'employment']
+            elif 'chakri-suggestion' in url:
+                return ['chakri', 'chakri-suggestion']
+            elif 'chakri-interview' in url:
+                return ['chakri', 'chakri-interview']
+        if 'lifestyle' in url:
+            if 'relation' in url:
+                return ['lifestyle', 'relation']
+            elif 'horoscope' in url:
+                return ['lifestyle', 'horoscope']
+            elif 'fashion' in url:
+                return ['lifestyle', 'fashion']
+            elif 'style' in url:
+                return ['lifestyle', 'style']
+            elif 'beauty' in url:
+                return ['lifestyle', 'beauty']
+            elif 'interior' in url:
+                return ['lifestyle', 'interior']
+            elif 'recipe' in url:
+                return ['lifestyle', 'recipe']
+            elif 'shopping' in url:
+                return ['lifestyle', 'shopping']
+        if 'technology' in url:
+            if 'gadget' in url:
+                return ['technology', 'gadget']
+            elif 'advice' in url:
+                return ['technology', 'advice']
+            elif 'automobiles' in url:
+                return ['technology', 'automobiles']
+            elif 'cyberworld' in url:
+                return ['technology', 'cyberworld']
+            elif 'freelancing' in url:
+                return ['technology', 'freelancing']
+            elif 'artificial-intelligence' in url:
+                return ['technology', 'artificial-intelligence']
+        if 'science' in url:
+            return ['science', 'science']
+        if 'education' in url:
+            if 'admission' in url:
+                return ['education', 'admission']
+            elif 'examination' in url:
+                return ['education', 'examination']
+            elif 'scholarship' in url:
+                return ['education', 'scholarship']
+            elif 'study' in url:
+                return ['education', 'study']
+            elif 'higher-education' in url:
+                return ['education', 'higher-education']
+            elif 'campus' in url:
+                return ['education', 'campus']
+        if 'onnoalo' in url:
+            if 'poem' in url:
+                return ['onnoalo', 'poem']
+            elif 'stories' in url:
+                return ['onnoalo', 'stories']
+            elif 'treatise' in url:
+                return ['onnoalo', 'treatise']
+            elif 'books' in url:
+                return ['onnoalo', 'books']
+            elif 'arts' in url:
+                return ['onnoalo', 'arts']
+            elif 'interview' in url:
+                return ['onnoalo', 'interview']
+            elif 'others' in url:
+                return ['onnoalo', 'others']
+            elif 'translation' in url:
+                return ['onnoalo', 'translation']
+            elif 'prose' in url:
+                return ['onnoalo', 'prose']
+            elif 'children' in url:
+                return ['onnoalo', 'children']
+        if 'travel' in url:
+            return ['travel', 'travel']
         
             
             
