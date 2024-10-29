@@ -399,7 +399,7 @@ class NewsScraper:
 # print(scraper.scrape_news_data("https://www.ittefaq.com.bd/687513/%E0%A6%9F%E0%A6%BF%E0%A6%B8%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0-%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF-%E0%A6%B8%E0%A7%9F%E0%A6%BE%E0%A6%AC%E0%A6%BF%E0%A6%A8-%E0%A6%A4%E0%A7%87%E0%A6%B2-%E0%A6%93-%E0%A6%AE%E0%A6%B8%E0%A7%81%E0%A6%B0-%E0%A6%A1%E0%A6%BE%E0%A6%B2-%E0%A6%95%E0%A6%BF%E0%A6%A8%E0%A6%9B%E0%A7%87-%E0%A6%B8%E0%A6%B0%E0%A6%95%E0%A6%BE%E0%A6%B0"))
 
 # Loading unique links
-with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Prothom_Alo\\prothom_alo_news_links.json') as f:
+with open('C:\\Users\\UseR\\Desktop\\Mehedi\\Spectrum_IT\\Prothom_Alo\\prothom_alo_news_links.json') as f:
     d = json.load(f)
 
 all_data = []
@@ -417,7 +417,7 @@ for i in d:
 
  
 
-with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Prothom_Alo\\prothom_alo_all_data.json", 'w', encoding='utf-8') as f:
+with open("C:\\Users\\UseR\\Desktop\\Mehedi\\Spectrum_IT\\Prothom_Alo\\prothom_alo_all_data.json", 'w', encoding='utf-8') as f:
     json.dump(all_data, f, ensure_ascii=False, indent=4)
 
 print(f"Saved {len(all_data)} unique links to prothom_alo_data.json")
