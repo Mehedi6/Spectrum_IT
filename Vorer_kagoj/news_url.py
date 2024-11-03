@@ -8,34 +8,117 @@ class LinkSpider(scrapy.Spider):
     start_urls = [
 
         #DHAKA_TRIBUNE
-        'https://www.manobkantha.com.bd/articlelist/4/national',
-        'https://www.manobkantha.com.bd/articlelist/6/politics',
-        'https://www.manobkantha.com.bd//articlelist/29/law',
-        'https://www.manobkantha.com.bd/articlelist/17/dhaka',
-        'https://www.manobkantha.com.bd/articlelist/18/chattogram',
-        'https://www.manobkantha.com.bd/articlelist/20/sylhet',
-        'https://www.manobkantha.com.bd/articlelist/21/barisal',
-        'https://www.manobkantha.com.bd/articlelist/22/khulna',
-        'https://www.manobkantha.com.bd/articlelist/23/rangpur',
-        'https://www.manobkantha.com.bd/articlelist/24/mymensingh',
-        'https://www.manobkantha.com.bd/articlelist/19/rajshahi',
-        'https://www.manobkantha.com.bd/articlelist/7/international',
-        'https://www.manobkantha.com.bd/articlelist/8/entertainment',
-        'https://www.manobkantha.com.bd/articlelist/9/sports',
-        'https://www.manobkantha.com.bd/articlelist/10/campus',
-        'https://www.manobkantha.com.bd/articlelist/13/it',
-        'https://www.manobkantha.com.bd/articlelist/41/job',
-        'https://www.manobkantha.com.bd/articlelist/38/lifestyle',
-        'https://www.manobkantha.com.bd/articlelist/12/economics',
-        'https://www.manobkantha.com.bd/articlelist/25/eco-ministries',
-        'https://www.manobkantha.com.bd/articlelist/27/economic-others',
-        'https://www.manobkantha.com.bd/articlelist/26/bank-insurance',
-        'https://www.manobkantha.com.bd//articlelist/28/literature',
-        'https://www.manobkantha.com.bd//articlelist/34/city',
-        'https://www.manobkantha.com.bd//articlelist/31/probash',
-        'https://www.manobkantha.com.bd//articlelist/42/crime',
+        #national
+        # 'https://www.bhorerkagoj.com/government',
+        # 'https://www.bhorerkagoj.com/law-justice',
+        # 'https://www.bhorerkagoj.com/media',
+        # 'https://www.bhorerkagoj.com/accident',
+        # 'https://www.bhorerkagoj.com/mourning',
+        # 'https://www.bhorerkagoj.com/weather',
+        # 'https://www.bhorerkagoj.com/national-other',
+        #  'https://www.bhorerkagoj.com/country',
         
+        # 'https://www.bhorerkagoj.com/crime',
         
+        # 'https://www.bhorerkagoj.com/awamileague',
+        # 'https://www.bhorerkagoj.com/bnp',
+        # 'https://www.bhorerkagoj.com/jp',
+        # 'https://www.bhorerkagoj.com/jamat',
+        # 'https://www.bhorerkagoj.com/politics-other',
+
+        # 'https://www.bhorerkagoj.com/australia',
+        # 'https://www.bhorerkagoj.com/middleeast',
+        # 'https://www.bhorerkagoj.com/india',
+        # 'https://www.bhorerkagoj.com/pakistan',
+        # 'https://www.bhorerkagoj.com/asia',
+        # 'https://www.bhorerkagoj.com/africa',
+        # 'https://www.bhorerkagoj.com/europe',
+        # 'https://www.bhorerkagoj.com/united-state',
+        # 'https://www.bhorerkagoj.com/south-america',
+        # 'https://www.bhorerkagoj.com/united-kingdom',
+        # 'https://www.bhorerkagoj.com/malaysia',
+        # 'https://www.bhorerkagoj.com/russia',
+        # 'https://www.bhorerkagoj.com/international-other',
+
+        # 'https://www.bhorerkagoj.com/worldtrade',
+        # 'https://www.bhorerkagoj.com/corporate',
+        # 'https://www.bhorerkagoj.com/budget',
+        # 'https://www.bhorerkagoj.com/export-import',
+        # 'https://www.bhorerkagoj.com/clothing',
+        # 'https://www.bhorerkagoj.com/share-market',
+        # 'https://www.bhorerkagoj.com/bank',
+        # 'https://www.bhorerkagoj.com/insurance',
+        # 'https://www.bhorerkagoj.com/tourism',
+        # 'https://www.bhorerkagoj.com/revenue',
+        'https://www.bhorerkagoj.com/entrepreneur',
+        'https://www.bhorerkagoj.com/private-org',
+        'https://www.bhorerkagoj.com/economics-other',
+        'https://www.bhorerkagoj.com/north-america',
+        'https://www.bhorerkagoj.com/business',
+
+        'https://www.bhorerkagoj.com/cricket',
+        'https://www.bhorerkagoj.com/football',
+        'https://www.bhorerkagoj.com/tennis',
+        'https://www.bhorerkagoj.com/hockey',
+        'https://www.bhorerkagoj.com/sports-interview',
+        'https://www.bhorerkagoj.com/bpl',
+        'https://www.bhorerkagoj.com/ipl',
+        'https://www.bhorerkagoj.com/sports-other',
+
+        'https://www.bhorerkagoj.com/dhallywood',
+        'https://www.bhorerkagoj.com/bollywood',
+        'https://www.bhorerkagoj.com/tallywood',
+        'https://www.bhorerkagoj.com/hollywood',
+        'https://www.bhorerkagoj.com/drama',
+        'https://www.bhorerkagoj.com/music',
+        'https://www.bhorerkagoj.com/entertainment-interview',
+        'https://www.bhorerkagoj.com/entertainment-other',
+
+        'https://www.bhorerkagoj.com/makeup',
+        'https://www.bhorerkagoj.com/home-decoration',
+        'https://www.bhorerkagoj.com/fashion',
+        'https://www.bhorerkagoj.com/tips',
+        'https://www.bhorerkagoj.com/solution',
+        'https://www.bhorerkagoj.com/food',
+        'https://www.bhorerkagoj.com/lifestyle-other',
+        
+        'https://www.bhorerkagoj.com/admission',
+        'https://www.bhorerkagoj.com/exam',
+        'https://www.bhorerkagoj.com/result',
+        'https://www.bhorerkagoj.com/scholarship',
+        'https://www.bhorerkagoj.com/campus',
+        'https://www.bhorerkagoj.com/study-abroad',
+        'https://www.bhorerkagoj.com/tutorial-other',
+
+        'https://www.bhorerkagoj.com/tech-news',
+        'https://www.bhorerkagoj.com/telecom',
+        'https://www.bhorerkagoj.com/mobile',
+        'https://www.bhorerkagoj.com/tech-socialmedia',
+        'https://www.bhorerkagoj.com/tech-apps',
+        'https://www.bhorerkagoj.com/innovation',
+        'https://www.bhorerkagoj.com/freelancing',
+        'https://www.bhorerkagoj.com/review',
+        'https://www.bhorerkagoj.com/tech-interview',
+        'https://www.bhorerkagoj.com/tech-other',
+
+        'https://www.bhorerkagoj.com/opinion',
+
+        'https://www.bhorerkagoj.com/health',
+
+        'https://www.bhorerkagoj.com/science',
+        
+        'https://www.bhorerkagoj.com/lifestyle-travel',
+        'https://www.bhorerkagoj.com/travel',
+
+        'https://www.bhorerkagoj.com/prose',
+        'https://www.bhorerkagoj.com/story',
+        'https://www.bhorerkagoj.com/poem',
+        'https://www.bhorerkagoj.com/literature-interview',
+        'https://www.bhorerkagoj.com/bookfair',
+        'https://www.bhorerkagoj.com/book-discussion',
+        'https://www.bhorerkagoj.com/literature-other',
+
+        'https://www.bhorerkagoj.com/probas',
 
 
     ]
@@ -56,7 +139,7 @@ class LinkSpider(scrapy.Spider):
         
         # news_items_1 = response.css('div.info.has_ai > div > div.title_holder > div > h2 > a')  # Adjust the selector based on the HTML structure
         news_items_2 =response.css('div.col-sm-4.col-md-4.paddingLR10.desktopSectionLead > div.thumbnail.marginB15 > a::attr(href), div.col-sm-8.col-md-8.paddingLR10.desktopSectionLead > div.thumbnail > a::attr(href), div.col-sm-12.col-md-12.lastItemNone > div.desktopSectionLead.marginB15 > div.thumbnail.borderRadius0.bgUnset.borderC1B1 > a::attr(href)')
-        
+        print(news_items_2,"=============================================================")
         news_type = self.get_news_type(response.url)
         # for news in news_items_1:
         #     yield {
@@ -65,12 +148,14 @@ class LinkSpider(scrapy.Spider):
                 
         #     }
         for news in news_items_2:
-            yield {
-                'url': response.urljoin(news.get()),  # Extract the full link
-                'type': news_type[0],
-                'subcategory': news_type[1]
-                
-            }
+            if news not in self.visited_urls:
+                self.visited_urls.append(news)
+                yield {
+                    'url': response.urljoin(news.get()),  # Extract the full link
+                    'type': news_type[0],
+                    'subcategory': news_type[1]
+                    
+                }
     def get_news_type(self, url):
         if 'government' in url:
             return ['natonal', 'government']

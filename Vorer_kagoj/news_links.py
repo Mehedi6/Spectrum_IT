@@ -7,8 +7,17 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
+
 import time, json
 import random
+
+user_agents = [
+    "U-A: 1",
+    "U-A: 2",
+    "U-A: 3",
+    "U-A: 4",
+    "U-A: 5",
+]
 
 # Function to scrape the given URLs and save the output links to a JSON file
 def scrape_links(output_file_name, urls_to_scrape):
@@ -16,7 +25,7 @@ def scrape_links(output_file_name, urls_to_scrape):
     chrome_options = Options()
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("user-agent=Your User Agent String")
+    chrome_options.add_argument(f"user-agent={random.choice(user_agents)}")
     
     driver = webdriver.Chrome(service=Service(), options=chrome_options)
     time.sleep(random.uniform(1,3)) 
@@ -24,7 +33,7 @@ def scrape_links(output_file_name, urls_to_scrape):
     # Scroll down the page
     def scroll_down():
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(1)  # Wait for content to load after scrolling
+        time.sleep(2)  # Wait for content to load after scrolling
     
     #fetching news-type
     def get_news_type(url):
@@ -278,6 +287,7 @@ def scrape_links(output_file_name, urls_to_scrape):
     # Extract links from both types of card elements
     # Function to extract links from both types of card elements
     def extract_links():
+        time.sleep(random.uniform(1,3)) 
         links = set()  # Use a set to avoid duplicates
         
         card_elements_1 = driver.find_elements(By.CSS_SELECTOR, 'div.col-sm-4.col-md-4.paddingLR10.desktopSectionLead > div.thumbnail.marginB15 > a')
@@ -305,7 +315,7 @@ def scrape_links(output_file_name, urls_to_scrape):
         driver.maximize_window()
 
         # Wait for the page to fully load
-        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div > a")))
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div > a")))
 
         # Step 1: Click all "See More" buttons
         click_see_more_button()
