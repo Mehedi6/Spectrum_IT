@@ -104,7 +104,7 @@ class NewsScraper:
         # Open the URL
         try:
             driver.get(url)
-            time.sleep(1)
+            # time.sleep(1)
         except Exception as e:
             print(f"Error parsing: {e}")
             return
@@ -156,7 +156,6 @@ class NewsScraper:
             author_element = driver.find_element(By.XPATH, '/html/body/div[7]/div/div/div/div[1]/div/section/div[1]/div[1]/ul/li[1]')
             author = author_element.text.strip()
 
-            print(author_element,"===================================")
             # author = author_element.text.strip()  # Remove any leading/trailing whitespace
             news_data['author'] = author
         except Exception as e:
