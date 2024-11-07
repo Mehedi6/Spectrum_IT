@@ -120,11 +120,11 @@ class NewsScraper:
 
         # Extract author
         try:
-            author_element = WebDriverWait(driver, 20).until(
-                EC.visibility_of_element_located((By.XPATH, '/html/body/div[1]/main/section/div/div/div[1]/div[2]/div[2]/div[1]/div/h6/text()'))
-            )
-            author = author_element.strip()
-            print(author_element,"====================================")  # This should print "অনলাইন ডেস্ক" or the relevant author name
+            author_element = driver.find_elements(By.XPATH, '//h6[@class="my-4"]')
+            print(author_element,"====================================")
+            author = author_element[0].text
+            print(dir(author_element[0]))
+            print(author,"=========================author_name====================================")  # This should print "অনলাইন ডেস্ক" or the relevant author name
             news_data['author'] = author
         except Exception as e:
             print("Error fetching author:", e)
