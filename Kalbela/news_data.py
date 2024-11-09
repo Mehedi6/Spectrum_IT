@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 from datetime import datetime
 import json
 import time, re
@@ -43,6 +44,7 @@ class NewsScraper:
     def parse_bengali_date(self, bengali_date_str):
         # Remove the 'প্রকাশ' part and strip any extra whitespace
         bengali_date_str = bengali_date_str.replace('প্রকাশ : ', '').strip()
+        bengali_date_str = bengali_date_str.replace('আপডেট : ', '').strip()
         
         # Convert Bengali numbers to English
         english_date_str = self.bengali_to_english(bengali_date_str)
@@ -57,7 +59,7 @@ class NewsScraper:
         
         # Define the format for parsing (using 24-hour format)
         try:
-            return datetime.strptime(english_date_str, "%d %B, %Y %H:%M")
+            return datetime.strptime(english_date_str, "%d %B %Y, %I:%M %p")
         except ValueError as e:
             print(f"Error parsing date: {e}")
             return None  # or handle error accordingly
@@ -88,7 +90,7 @@ class NewsScraper:
 
         # Extract title from meta tag
         try:
-            title = driver.find_element(By.CSS_SELECTOR, 'meta[property="og:title"]').get_attribute('content')
+            title = driver.find_element(By.CSS_SELECTOR, '#details_content > div.row > div.col-md-9 > div.headline_content_block.post_template-0 > div.headline_section.mb-2 > h1').text
             news_data['title'] = title
         except Exception as e:
             print(f"Error extracting title: {e}")
@@ -96,7 +98,7 @@ class NewsScraper:
 
         # Extract image URL using CSS selector
         try:
-            image_url = driver.find_elements(By.XPATH, '//*[@id="adf-overlay"]')
+            image_url = driver.find_elements(By.XPATH, '//*[@id="dtl_part"]/div[1]/div[1]/div[1]/img')
             image_url = image_url[0].get_attribute('src')
             news_data['image_urls'] = image_url
         except Exception as e:
@@ -106,16 +108,11 @@ class NewsScraper:
         # Extract content
         try:
             # Locate the main news article section
-            main_content_section = driver.find_element(By.CSS_SELECTOR, "div.col-sm-12.col-md-12.col-lg-9.col-xl-10 > div.newsArticle")
+            content_elements = driver.find_elements(By.XPATH, '//div[@class="dtl_content_section"]')[0]
+            content_element = content_elements.find_elements(By.TAG_NAME, 'p')
             
-            # Gather paragraphs from both .mb-5 and .my-5 article classes within the main content
-            mb5_elements = main_content_section.find_elements(By.CSS_SELECTOR, "article.mb-5 > p")
-            # my5_elements_1 = main_content_section.find_elements(By.CSS_SELECTOR, "article.my-5")
-            my5_elements_2 = main_content_section.find_elements(By.CSS_SELECTOR, "article.my-5 > p")
             
-            # Combine content from both selectors
-            content_elements = mb5_elements + my5_elements_2
-            content = "\n".join([elem.text for elem in content_elements])
+            content = "\n".join([elem.text for elem in content_element])
             
             news_data['content'] = content
     
@@ -125,7 +122,7 @@ class NewsScraper:
 
         # Extract author
         try:
-            author_element = driver.find_elements(By.XPATH, '//h6[@class="my-4"]')
+            author_element = driver.find_elements(By.XPATH, '//div[@class="rpt_name mt-2"]')
             
             author = author_element[0].text
             
@@ -171,12 +168,8 @@ class NewsScraper:
 
         # Extract news subcategory and type
         try:
-            # Locate and extract JSON-LD structured data
-            json_ld_element = driver.find_element(By.CSS_SELECTOR, 'script[type="application/ld+json"]').get_attribute("innerHTML")
-            json_data = json.loads(json_ld_element)
-
-            # Extract keywords from the JSON data
-            news_data['keywords'] = json_data.get('keywords', '').split(',')
+            keyword = driver.find_element(By.CSS_SELECTOR, 'meta[name="keywords"]').get_attribute('content')
+            news_data['keywords'] = keyword.split(',')
         except:
             news_data['keywords'] = []
         news_data['news_subcategory'] = subcategory  # Hardcoding as per your requirement
@@ -185,8 +178,25 @@ class NewsScraper:
 
         # Extract published date and updated date
         try:
-            published_date_text = driver.find_element(By.XPATH, '//time[@class="text-black-50 text-center d-block"]').text
-            published_date_text = published_date_text.replace("প্রকাশ : ","")
+            # Find the toggle button (XPath you provided)
+            toggle_button_xpath = '/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[1]/div[2]/span/svg/path[2]'
+
+            # Click the toggle button to update the date
+            # Wait until the element is clickable
+            toggle_button = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, toggle_button_xpath))
+            )
+            toggle_button.click()
+
+            # Wait for a moment to ensure the page has updated
+            time.sleep(3)  # You can adjust this time based on your page load speed
+            # Wait for the published date to appear
+            published_date_element = WebDriverWait(driver, 10).until(
+                EC.visibility_of_element_located((By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[1]/div[2]/div'))
+            )
+            
+            # Clean the text to get the date
+            published_date_text = published_date_element.replace("প্রকাশ : ", "")
             
             # Parse the dates to ISO format using helper functions
             published_date = self.parse_bengali_date(published_date_text.strip())
@@ -195,10 +205,16 @@ class NewsScraper:
             print(f"Error extracting dates: {e}")
             news_data['published_date'] = None
         try:
-            updated_date_text = driver.find_element(By.CSS_SELECTOR, '/html/body/div[5]/div/div[1]/div[1]/div[2]/div[1]/div[1]/span').text
-            updated_date_text = updated_date_text.replace("আপডেট : ","")
-            
-            # Parse the dates to ISO format using helper functions
+            # Click the button to update the time
+            # update_button = driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[1]/div[3]/span/svg/path[1]')
+            # ActionChains(driver).move_to_element(update_button).click().perform()
+
+            # Wait for the updated content to load (if necessary, you can use WebDriverWait)
+            updated_date_text = driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[1]/div[3]/div').text
+            print(updated_date_text)
+            updated_date_text = updated_date_text.replace("আপডেট : ", "")
+
+            # Parse the date to ISO format
             updated_date = self.parse_bengali_date(updated_date_text.strip())
             news_data['updated_date'] = updated_date.isoformat() if updated_date else None
         except Exception as e:
@@ -206,7 +222,7 @@ class NewsScraper:
             news_data['updated_date'] = None
 
         # Add the source and last_scraped time
-        news_data['source'] = "দৈনিক কালের কণ্ঠ"
+        news_data['source'] = "দৈনিক কালবেলা"
         news_data['last_scraped'] = datetime.now().isoformat()
 
         # Close the browser when done
@@ -217,14 +233,14 @@ class NewsScraper:
 # print(scraper.scrape_news_data("https://www.ittefaq.com.bd/687513/%E0%A6%9F%E0%A6%BF%E0%A6%B8%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0-%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF-%E0%A6%B8%E0%A7%9F%E0%A6%BE%E0%A6%AC%E0%A6%BF%E0%A6%A8-%E0%A6%A4%E0%A7%87%E0%A6%B2-%E0%A6%93-%E0%A6%AE%E0%A6%B8%E0%A7%81%E0%A6%B0-%E0%A6%A1%E0%A6%BE%E0%A6%B2-%E0%A6%95%E0%A6%BF%E0%A6%A8%E0%A6%9B%E0%A7%87-%E0%A6%B8%E0%A6%B0%E0%A6%95%E0%A6%BE%E0%A6%B0"))
 
 # Loading unique links
-with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalerkantho\\news_links.json') as f:
+with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalbela\\sample_news_url.json') as f:
     d = json.load(f)
 
 all_data = []
 for i in d:
     url = i['url']
-    type = i['news_type']
-    subcategory = i['news_subcategory']
+    type = i['type']
+    subcategory = i['subcategory']
     scraper = NewsScraper()
     print(url)
     news_data = scraper.scrape_news_data(url, type, subcategory)
@@ -232,7 +248,7 @@ for i in d:
 
  
 try:
-    with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalerkantho\\news_data.json", 'r', encoding='utf-8') as file:
+    with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalbela\\news_data.json", 'r', encoding='utf-8') as file:
         existing_data = json.load(file)
 except FileNotFoundError:
     existing_data = []  # Initialize empty if file doesn't exist
@@ -243,7 +259,7 @@ filtered_new_data = [item for item in all_data if item['url'] not in existing_ur
 
 # Append new data to existing data and write back to JSON
 existing_data.extend(filtered_new_data)
-with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalerkantho\\news_data.json", 'w', encoding='utf-8') as f:
+with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalbela\\news_data.json", 'w', encoding='utf-8') as f:
     json.dump(existing_data, f, ensure_ascii=False, indent=4)
 
-print(f"Saved {len(all_data)} unique links to Kalerkantho_data.json")
+print(f"Saved {len(all_data)} unique links to Kalbela_data.json")
