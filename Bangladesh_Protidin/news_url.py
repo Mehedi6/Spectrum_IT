@@ -103,7 +103,7 @@ def scrape_links(output_file_name, urls_to_scrape):
         links = set()  # Use a set to avoid duplicates
         
         card_elements_1 = driver.find_elements(By.CSS_SELECTOR, 'div.cat-2nd-lead > a')
-        card_elements_2 = driver.find_elements(By.XPATH, '/html/body/div[5]/div/div[1]/div[3]/div/a')  
+        card_elements_2 = driver.find_elements(By.XPATH, '/html/body/div[5]/div/div[1]/div[3]/div/a')   
         card_elements = card_elements_1 + card_elements_2
 
         print(len(card_elements))

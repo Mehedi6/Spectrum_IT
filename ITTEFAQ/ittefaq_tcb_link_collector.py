@@ -32,7 +32,7 @@ def scrape_links(output_file_name, urls_to_scrape):
                 # Wait for the button to be clickable
                 wait = WebDriverWait(driver, 10)
                 see_more_button = wait.until(EC.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="ajax_load_more_687_btn"]')
+                    (By.XPATH, '//*[@id="ajax_load_more_687_btn"]')    
                 ))
 
                 try:

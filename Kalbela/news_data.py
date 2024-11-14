@@ -176,34 +176,7 @@ class NewsScraper:
         news_data['news_type'] = news_type  # Hardcoding as per your requirement
         news_data['media_type'] = 'newspaper'
 
-        # Extract published date and updated date
-        try:
-            # Find the toggle button (XPath you provided)
-            toggle_button_xpath = '/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[1]/div[2]/span/svg/path[2]'
-
-            # Click the toggle button to update the date
-            # Wait until the element is clickable
-            toggle_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, toggle_button_xpath))
-            )
-            toggle_button.click()
-
-            # Wait for a moment to ensure the page has updated
-            time.sleep(3)  # You can adjust this time based on your page load speed
-            # Wait for the published date to appear
-            published_date_element = WebDriverWait(driver, 10).until(
-                EC.visibility_of_element_located((By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[1]/div[2]/div'))
-            )
-            
-            # Clean the text to get the date
-            published_date_text = published_date_element.replace("প্রকাশ : ", "")
-            
-            # Parse the dates to ISO format using helper functions
-            published_date = self.parse_bengali_date(published_date_text.strip())
-            news_data['published_date'] = published_date.isoformat() if published_date else None
-        except Exception as e:
-            print(f"Error extracting dates: {e}")
-            news_data['published_date'] = None
+        
         try:
             # Click the button to update the time
             # update_button = driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[1]/div[3]/span/svg/path[1]')
@@ -221,6 +194,37 @@ class NewsScraper:
             
             news_data['updated_date'] = None
 
+        if news_data['updated_date'] is not None:
+            # Extract published date and updated date
+            try:
+                # Find the toggle button (XPath you provided)
+                toggle_button_xpath = 'Layer_1'
+                elem = driver.find_elements(By.CLASS_NAME, toggle_button_xpath)
+                from selenium.webdriver.common.action_chains import ActionChains
+                target_location = elem[1].location
+                print(target_location)
+                time.sleep(2)
+                ActionChains(driver).move_by_offset(target_location['x'], target_location['y']).click().perform()
+                print("Clicked at the SVG toggle location.")
+                time.sleep(3)
+              
+                # Wait for the published date to appear
+                published_date_element = driver.find_element(By.XPATH, '//*[@id="details_content"]/div[2]/div[1]/div[2]/div[1]/div[2]/div').text
+                print(published_date_element)
+                
+                # Clean the text to get the date
+                published_date_text = published_date_element.replace("প্রকাশ : ", "")
+                
+                # Parse the dates to ISO format using helper functions
+                published_date = self.parse_bengali_date(published_date_text.strip())
+                print(published_date)
+                news_data['published_date'] = published_date.isoformat() if published_date else None
+            except Exception as e:
+                print(f"Error extracting dates: {e}")
+                news_data['published_date'] = None
+        else:
+            pass
+
         # Add the source and last_scraped time
         news_data['source'] = "দৈনিক কালবেলা"
         news_data['last_scraped'] = datetime.now().isoformat()
@@ -233,7 +237,7 @@ class NewsScraper:
 # print(scraper.scrape_news_data("https://www.ittefaq.com.bd/687513/%E0%A6%9F%E0%A6%BF%E0%A6%B8%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0-%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF-%E0%A6%B8%E0%A7%9F%E0%A6%BE%E0%A6%AC%E0%A6%BF%E0%A6%A8-%E0%A6%A4%E0%A7%87%E0%A6%B2-%E0%A6%93-%E0%A6%AE%E0%A6%B8%E0%A7%81%E0%A6%B0-%E0%A6%A1%E0%A6%BE%E0%A6%B2-%E0%A6%95%E0%A6%BF%E0%A6%A8%E0%A6%9B%E0%A7%87-%E0%A6%B8%E0%A6%B0%E0%A6%95%E0%A6%BE%E0%A6%B0"))
 
 # Loading unique links
-with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalbela\\sample_news_url.json') as f:
+with open('sample_news_url.json') as f:
     d = json.load(f)
 
 all_data = []
@@ -248,7 +252,7 @@ for i in d:
 
  
 try:
-    with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalbela\\news_data.json", 'r', encoding='utf-8') as file:
+    with open("news_data.json", 'r', encoding='utf-8') as file:
         existing_data = json.load(file)
 except FileNotFoundError:
     existing_data = []  # Initialize empty if file doesn't exist
@@ -259,7 +263,7 @@ filtered_new_data = [item for item in all_data if item['url'] not in existing_ur
 
 # Append new data to existing data and write back to JSON
 existing_data.extend(filtered_new_data)
-with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalbela\\news_data.json", 'w', encoding='utf-8') as f:
+with open("news_data.json", 'w', encoding='utf-8') as f:
     json.dump(existing_data, f, ensure_ascii=False, indent=4)
 
 print(f"Saved {len(all_data)} unique links to Kalbela_data.json")

@@ -159,18 +159,33 @@ class NewsScraper:
 
         # Extract published date and updated date
         try:
-            published_date_text = driver.find_element(By.XPATH, '//*[@id="details_content"]/div/div[1]/div[2]/div/div[2]').text  
-            published_date_text = published_date_text.replace("প্রকাশ : ","")
+            published_date = driver.find_element(By.XPATH, '//div[@class="entry_update mt-1 pt-1"]').text   
+            
+            index = published_date.find('আপডেট')
+
+            # Extract the substring after 'প্রকাশিত:'
+            if index != -1:
+                published_date_text = published_date[:index].strip()
+            else:  
+                print(published_date,"=====")
+                published_date_text = published_date.replace("প্রকাশ : ","")
+                published_date_text = published_date_text.split('\n')
             
             # Parse the dates to ISO format using helper functions
-            published_date = self.parse_bengali_date(published_date_text.strip())
+            published_date = self.parse_bengali_date(published_date_text[0].strip())
             news_data['published_date'] = published_date.isoformat() if published_date else None
         except Exception as e:
             print(f"Error extracting dates: {e}")
             news_data['published_date'] = None
         try:
-            updated_date_text = driver.find_element(By.CSS_SELECTOR, '#widget_564 > div > div > div > div > div > div > div.row.detail_holder > div > div > div.content_detail_small_width > div > div.additional_info_container > div > div.each_row.time > span.modified_time').text
+            updated_date = driver.find_element(By.XPATH, '//div[@class="entry_update mt-1 pt-1"]').text
+            index = updated_date.find('আপডেট')
+           
+            # Extract the substring after 'প্রকাশিত:'
+            if index != -1:
+                updated_date_text = updated_date[index + len('আপডেট :'):].strip() 
             updated_date_text = updated_date_text.replace("আপডেট : ","")
+            
             
             # Parse the dates to ISO format using helper functions
             updated_date = self.parse_bengali_date(updated_date_text.strip())
@@ -190,34 +205,38 @@ class NewsScraper:
 # scraper = NewsScraper()
 # print(scraper.scrape_news_data("https://www.ittefaq.com.bd/687513/%E0%A6%9F%E0%A6%BF%E0%A6%B8%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0-%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF-%E0%A6%B8%E0%A7%9F%E0%A6%BE%E0%A6%AC%E0%A6%BF%E0%A6%A8-%E0%A6%A4%E0%A7%87%E0%A6%B2-%E0%A6%93-%E0%A6%AE%E0%A6%B8%E0%A7%81%E0%A6%B0-%E0%A6%A1%E0%A6%BE%E0%A6%B2-%E0%A6%95%E0%A6%BF%E0%A6%A8%E0%A6%9B%E0%A7%87-%E0%A6%B8%E0%A6%B0%E0%A6%95%E0%A6%BE%E0%A6%B0"))
 
+try:
+    with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\BSS_News\\news_data.json", 'r', encoding='utf-8') as file:
+        existing_data = json.load(file)
+except FileNotFoundError:
+    existing_data = []  # Initialize empty if file doesn't exist
 # Loading unique links
-with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\BSS_News\\news_urls.json') as f:
+with open('C:\\Users\\arwen\\Desktop\\Newspaper Scraping\\Spectrum_IT\\BSS_News\\news_urls.json') as f:
     d = json.load(f)
+
+existing_url = {item['url'] for item in existing_data if item.get('published_date') is None}
+
 
 all_data = []
 for i in d:
     url = i['url']
-    type = i['news_type']
-    subcategory = i['news_subcategory']
+    type = i["news_type"]
+    sub = i["news_subcategory"]
     scraper = NewsScraper()
-    print(url)
-    news_data = scraper.scrape_news_data(url, type, subcategory)
-    all_data.append(news_data)
+    if url in existing_url:
+        news_data = scraper.scrape_news_data(url, type, sub)
+        for item in existing_data:
+            if item['url'] == url and item.get('published_date') is None:
+                item.update(news_data)
+                break
+    else:
+        all_data.append(i)  # Append data that doesn't need updating
 
- 
-try:
-    with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\BSS_News\\bss_news_data.json", 'r', encoding='utf-8') as file:
-        existing_data = json.load(file)
-except FileNotFoundError:
-    existing_data = []  # Initialize empty if file doesn't exist
 
-# Extract only new URLs not already in the file
-existing_url = {item['url'] for item in existing_data}
-filtered_new_data = [item for item in all_data if item['url'] not in existing_url]
 
 # Append new data to existing data and write back to JSON
-existing_data.extend(filtered_new_data)
-with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\BSS_News\\bss_news_data.json", 'w', encoding='utf-8') as f:
+existing_data.extend(all_data)
+with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\BSS_News\\news_data.json", 'w', encoding='utf-8') as f:
     json.dump(existing_data, f, ensure_ascii=False, indent=4)
 
-print(f"Saved {len(all_data)} unique links to ittefaq_data.json")
+print(f"Saved {len(all_data)} unique links to sample_data.json")
