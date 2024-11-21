@@ -42,33 +42,58 @@ class NewsScraper:
         return english_date_str
 
     def parse_bengali_date(self, bengali_date_str):
-        # Remove the 'প্রকাশ' part and strip any extra whitespace
+        from datetime import datetime, timedelta
+        import re
+
+        # Remove unnecessary parts like 'প্রকাশ' or 'আপডেট' and strip extra whitespace
         bengali_date_str = bengali_date_str.replace('প্রকাশ : ', '').strip()
         bengali_date_str = bengali_date_str.replace('আপডেট : ', '').strip()
-        
+
+        # Handle relative times like "১৪ ঘণ্টা আগে" or "১৯ মিনিট আগে"
+        if "ঘণ্টা আগে" in bengali_date_str or "মিনিট আগে" in bengali_date_str:
+            # Match the number and unit in the string
+            match = re.match(r"(\d+)\s*(ঘণ্টা আগে|মিনিট আগে)", bengali_date_str)
+            if match:
+                bengali_number = match.group(1)  # Extract the number
+                unit = match.group(2)           # Extract the unit
+
+                # Convert Bengali number to English number
+                english_number = int(self.bengali_to_english(bengali_number))
+
+                # Get the current time
+                current_time = datetime.now()
+
+                # Subtract the corresponding time delta based on the unit
+                if "ঘণ্টা" in unit:  # Hours
+                    return (current_time - timedelta(hours=english_number)).replace(microsecond=0)
+                elif "মিনিট" in unit:  # Minutes
+                    return (current_time - timedelta(minutes=english_number)).replace(microsecond=0)
+
         # Convert Bengali numbers to English
         english_date_str = self.bengali_to_english(bengali_date_str)
-        
+
         # Replace Bengali month names with English ones
         english_date_str = self.replace_bengali_strings(english_date_str)
-        
-        # Handle the case with the extra space in the time part
-        english_date_str = re.sub(r'(\d{1,2}):(\d{1,2})', r'\1:\2', english_date_str)  # Fix extra space in time
-        
+
+        # Handle any extra spaces in the time format
+        english_date_str = re.sub(r'(\d{1,2}):(\d{1,2})', r'\1:\2', english_date_str)
+
         print(f"Final date string for parsing: {english_date_str}")  # Debugging print
-        
-        # Define the format for parsing (using 24-hour format)
+
+        # Parse the date with the assumed format (e.g., "23 October, 2024")
         try:
-            return datetime.strptime(english_date_str, "%d %B %Y, %I:%M %p")
+            parsed_date = datetime.strptime(english_date_str, "%d %B, %Y")
+            return parsed_date.replace(microsecond=0)
         except ValueError as e:
             print(f"Error parsing date: {e}")
-            return None  # or handle error accordingly
-        
+            return None  # Handle errors as needed
 
 
     def scrape_news_data(self, url, news_type, subcategory):
         # Configure ChromeDriver
         chrome_options = Options()
+        chrome_options.add_argument("--headless")  # Run in headless mode
+        chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         driver = webdriver.Chrome(service=Service(), options=chrome_options)
@@ -121,7 +146,7 @@ class NewsScraper:
 
         # Extract author
         try:
-            author_element = driver.find_element(By.XPATH, '//div[@class="rpt_name"]')
+            author_element = driver.find_element(By.XPATH, '//div[@class="rpt_name"] | //div[@class="rpt_name mt-2 d-inline-block float-left"]/p/span')
             
             author = author_element.text
             
@@ -206,7 +231,7 @@ class NewsScraper:
             news_data['updated_date'] = None
 
         # Add the source and last_scraped time
-        news_data['source'] = "দৈনিক কালবেলা"
+        news_data['source'] = "প্রতিদিনের সংবাদ"
         news_data['last_scraped'] = datetime.now().isoformat()
 
         # Close the browser when done
@@ -216,21 +241,6 @@ class NewsScraper:
 # scraper = NewsScraper()
 # print(scraper.scrape_news_data("https://www.ittefaq.com.bd/687513/%E0%A6%9F%E0%A6%BF%E0%A6%B8%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0-%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF-%E0%A6%B8%E0%A7%9F%E0%A6%BE%E0%A6%AC%E0%A6%BF%E0%A6%A8-%E0%A6%A4%E0%A7%87%E0%A6%B2-%E0%A6%93-%E0%A6%AE%E0%A6%B8%E0%A7%81%E0%A6%B0-%E0%A6%A1%E0%A6%BE%E0%A6%B2-%E0%A6%95%E0%A6%BF%E0%A6%A8%E0%A6%9B%E0%A7%87-%E0%A6%B8%E0%A6%B0%E0%A6%95%E0%A6%BE%E0%A6%B0"))
 
-# Loading unique links
-with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Protidiner_shongbad\\sample_news_url.json') as f:
-    d = json.load(f)
-
-all_data = []
-for i in d:
-    url = i['url']
-    type = i['type']
-    subcategory = i['subcategory']
-    scraper = NewsScraper()
-    print(url)
-    news_data = scraper.scrape_news_data(url, type, subcategory)
-    all_data.append(news_data)
-
- 
 try:
     with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Protidiner_shongbad\\news_data.json", 'r', encoding='utf-8') as file:
         existing_data = json.load(file)
@@ -239,10 +249,25 @@ except FileNotFoundError:
 
 # Extract only new URLs not already in the file
 existing_url = {item['url'] for item in existing_data}
-filtered_new_data = [item for item in all_data if item['url'] not in existing_url]
+
+# Loading unique links
+with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Protidiner_shongbad\\news_url.json') as f:
+    d = json.load(f)
+
+all_data = []
+for i in d:
+    url = i['url']
+    type = i['type']
+    subcategory = i['subcategory']
+    scraper = NewsScraper()
+    if url not in existing_url:
+        news_data = scraper.scrape_news_data(url, type, subcategory)
+        all_data.append(news_data)
+
+
 
 # Append new data to existing data and write back to JSON
-existing_data.extend(filtered_new_data)
+existing_data.extend(all_data)
 with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\Protidiner_shongbad\\news_data.json", 'w', encoding='utf-8') as f:
     json.dump(existing_data, f, ensure_ascii=False, indent=4)
 

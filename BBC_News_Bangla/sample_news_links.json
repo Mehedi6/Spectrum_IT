@@ -1,0 +1,23 @@
+[
+    {
+        "url": "https://www.bbc.com/bengali/articles/cgqyv7n5z78o",
+        "news_type": "national",
+        "news_subcategory": "all-bangladesh"
+    },
+    {
+        "url": "https://www.bbc.com/bengali/articles/cw0wz0znkjxo",
+        "news_type": "health",
+        "news_subcategory": "general"
+    },
+    {
+        "url": "https://www.bbc.com/bengali/news-61608446",
+        "news_type": "technology",
+        "news_subcategory": "innovation-technology"
+    },
+    {
+        "url": "https://www.bbc.com/bengali/news-59852240",
+        "news_type": "technology",
+        "news_subcategory": "innovation-technology"
+    }
+
+]

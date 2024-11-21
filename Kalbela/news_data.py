@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
+
 from datetime import datetime
 import json
 import time, re
@@ -77,10 +78,9 @@ class NewsScraper:
         # Open the URL
         try:
             driver.get(url)
-            driver.maximize_window()
+            # driver.maximize_window()
         except:
-            return
-        
+            return 
         
         # Initialize the dictionary to hold the news data
         news_data = {}
@@ -200,13 +200,12 @@ class NewsScraper:
                 # Find the toggle button (XPath you provided)
                 toggle_button_xpath = 'Layer_1'
                 elem = driver.find_elements(By.CLASS_NAME, toggle_button_xpath)
-                from selenium.webdriver.common.action_chains import ActionChains
                 target_location = elem[1].location
                 print(target_location)
                 time.sleep(2)
                 ActionChains(driver).move_by_offset(target_location['x'], target_location['y']).click().perform()
                 print("Clicked at the SVG toggle location.")
-                time.sleep(3)
+                time.sleep(2)
               
                 # Wait for the published date to appear
                 published_date_element = driver.find_element(By.XPATH, '//*[@id="details_content"]/div[2]/div[1]/div[2]/div[1]/div[2]/div').text
@@ -223,7 +222,17 @@ class NewsScraper:
                 print(f"Error extracting dates: {e}")
                 news_data['published_date'] = None
         else:
-            pass
+            # Wait for the published date to appear
+            published_date_element = driver.find_element(By.XPATH, '//*[@id="details_content"]/div[2]/div[1]/div[2]/div[1]/div[2]/div').text
+            print(published_date_element)
+                
+            # Clean the text to get the date
+            published_date_text = published_date_element.replace("প্রকাশ : ", "")
+            
+            # Parse the dates to ISO format using helper functions
+            published_date = self.parse_bengali_date(published_date_text.strip())
+            print(published_date)
+            news_data['published_date'] = published_date.isoformat() if published_date else None
 
         # Add the source and last_scraped time
         news_data['source'] = "দৈনিক কালবেলা"
@@ -235,9 +244,16 @@ class NewsScraper:
         return news_data
 # scraper = NewsScraper()
 # print(scraper.scrape_news_data("https://www.ittefaq.com.bd/687513/%E0%A6%9F%E0%A6%BF%E0%A6%B8%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0-%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF-%E0%A6%B8%E0%A7%9F%E0%A6%BE%E0%A6%AC%E0%A6%BF%E0%A6%A8-%E0%A6%A4%E0%A7%87%E0%A6%B2-%E0%A6%93-%E0%A6%AE%E0%A6%B8%E0%A7%81%E0%A6%B0-%E0%A6%A1%E0%A6%BE%E0%A6%B2-%E0%A6%95%E0%A6%BF%E0%A6%A8%E0%A6%9B%E0%A7%87-%E0%A6%B8%E0%A6%B0%E0%A6%95%E0%A6%BE%E0%A6%B0"))
+try:
+    with open("C:\\Users\\arwen\\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalbela\\news_data.json", 'r', encoding='utf-8') as file:
+        existing_data = json.load(file)
+except FileNotFoundError:
+    existing_data = []  # Initialize empty if file doesn't exist
 
+# Extract only new URLs not already in the file
+existing_url = {item['url'] for item in existing_data}
 # Loading unique links
-with open('sample_news_url.json') as f:
+with open('C:\\Users\\arwen\\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalbela\\news_url.json') as f:
     d = json.load(f)
 
 all_data = []
@@ -246,24 +262,21 @@ for i in d:
     type = i['type']
     subcategory = i['subcategory']
     scraper = NewsScraper()
-    print(url)
-    news_data = scraper.scrape_news_data(url, type, subcategory)
-    all_data.append(news_data)
+    if url in existing_url:
+        
+        # Replace entry in existing data where published_date is None
+        for item in existing_data:
+            if item['url'] == url and (item.get('published_date') is None or 'published_date' not in item):
+                news_data = scraper.scrape_news_data(url, type, subcategory)
+                item.update(news_data)
+                break
+    else:
+        news_data = scraper.scrape_news_data(url, type, subcategory)
+        all_data.append(news_data) 
 
  
-try:
-    with open("news_data.json", 'r', encoding='utf-8') as file:
-        existing_data = json.load(file)
-except FileNotFoundError:
-    existing_data = []  # Initialize empty if file doesn't exist
-
-# Extract only new URLs not already in the file
-existing_url = {item['url'] for item in existing_data}
-filtered_new_data = [item for item in all_data if item['url'] not in existing_url]
-
-# Append new data to existing data and write back to JSON
-existing_data.extend(filtered_new_data)
-with open("news_data.json", 'w', encoding='utf-8') as f:
+existing_data.extend(all_data)
+with open("C:\\Users\\arwen\\Desktop\\Newspaper Scraping\\Spectrum_IT\\Kalbela\\news_data.json", 'w', encoding='utf-8') as f:
     json.dump(existing_data, f, ensure_ascii=False, indent=4)
 
 print(f"Saved {len(all_data)} unique links to Kalbela_data.json")

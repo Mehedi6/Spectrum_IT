@@ -104,7 +104,7 @@ class NewsScraper:
         # Open the URL
         try:
             driver.get(url)
-            driver.maximize_window()
+            # driver.maximize_window()
             # time.sleep(1)
         except Exception as e:
             print(f"Error parsing: {e}")
@@ -269,7 +269,7 @@ except FileNotFoundError:
 
 existing_url = {item["url"] for item in existing_data}
 # Loading unique links
-with open('C:\\Users\\arwen\\Desktop\\Newspaper Scraping\\Spectrum_IT\\NayaDigonto\\news_url3.json','r', encoding='utf-8') as f:
+with open('C:\\Users\\arwen\\Desktop\\Newspaper Scraping\\Spectrum_IT\\NayaDigonto\\news_url2.json','r', encoding='utf-8') as f:
     d = json.load(f)
 
 all_data = []
@@ -281,7 +281,10 @@ for i in d:
     if url not in existing_url:
         scraper = NewsScraper()
         news_data = scraper.scrape_news_data(url, type, subcategory)
-        all_data.append(news_data)
+        if news_data == None:
+            continue
+        else:
+            all_data.append(news_data)
     else:
         continue
 

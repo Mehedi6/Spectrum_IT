@@ -206,7 +206,8 @@ def scrape_links(output_file_name, urls_to_scrape):
         news_subcategory = news_types[1]
         # all_links.update(links_data)  # Update the set to ensure all links are unique
         for link in links_data:
-            all_links.add((link, news_type, news_subcategory))
+            if link not in {item[0] for item in all_links}:  # Check if URL is not already in the set
+                all_links.add((link, news_type, news_subcategory))
     unique_links = [{"url": link[0], "news_type": link[1], "news_subcategory": link[2]} for link in all_links]  # Convert the set to a list of dicts
     try:
         with open(output_file_name, 'r', encoding='utf-8') as file:

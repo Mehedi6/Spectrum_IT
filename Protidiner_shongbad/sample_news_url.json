@@ -1,7 +1,577 @@
 [
     {
-    "url": "https://www.protidinersangbad.com/politics/484266",
-    "type": "politics",
-    "subcategory": "general"
+        "url": "https://www.protidinersangbad.com/national/484394",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484389",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484387",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484380",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484278",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484276",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484275",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484277",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484274",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484273",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484272",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484271",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484270",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/national/484269",
+        "type": "national",
+        "subcategory": "general"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467423",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467422",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467421",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467420",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467419",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467422",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467421",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467420",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467419",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467418",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467413",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467412",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466734",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466566",
+        "type": "national",
+        "subcategory": "capital-city"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467411",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466732",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466728",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466710",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466569",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466732",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466728",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466710",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466569",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466565",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466558",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466407",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466405",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466227",
+        "type": "national",
+        "subcategory": "chittagong"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467077",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466571",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466570",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466226",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465859",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466571",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466570",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466226",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465859",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465332",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464626",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464609",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464286",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464124",
+        "type": "national",
+        "subcategory": "rajshahi"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467416",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467414",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467079",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466729",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466564",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467414",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467079",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466729",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466564",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466408",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466225",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466224",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466222",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465862",
+        "type": "national",
+        "subcategory": "khulna"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466561",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466409",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465861",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465518",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465513",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466409",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465861",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465518",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465513",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465170",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465165",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464937",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464805",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464625",
+        "type": "national",
+        "subcategory": "barisal"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466735",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466228",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465515",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465333",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464980",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466228",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465515",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465333",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464980",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/463662",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/463185",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/462997",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/462996",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/462054",
+        "type": "national",
+        "subcategory": "sylhet"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/467078",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466730",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465860",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465856",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465168",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466730",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465860",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465856",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465168",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464989",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464988",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464939",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464938",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/464636",
+        "type": "national",
+        "subcategory": "rangpur"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/466410",
+        "type": "national",
+        "subcategory": "mymensingh"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465857",
+        "type": "national",
+        "subcategory": "mymensingh"
+    },
+    {
+        "url": "https://www.protidinersangbad.com/whole-country/465519",
+        "type": "national",
+        "subcategory": "mymensingh"
     }
 ]
