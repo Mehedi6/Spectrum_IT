@@ -9,6 +9,7 @@ from datetime import datetime
 import json
 import time, re
 import html
+import urllib.parse
 
 class NewsScraper:
     
@@ -168,9 +169,9 @@ class NewsScraper:
 
         # Extract author
         try:
-            author_element = wait.until(EC.presence_of_element_located(
-                (By.XPATH, '/html/body/div[1]/main/article/div[1]/div/div/div[1]/div[1]/div/div/p[1]')
-            ))
+            author_element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/main/article/div[1]/div/div/div[1]/div[1]/div/div/p[1]'))
+            )
             # Extract the text from the located element
             author = author_element.get_attribute('innerText').strip()
             
@@ -268,7 +269,7 @@ class NewsScraper:
 # print(scraper.scrape_news_data("https://www.ittefaq.com.bd/687513/%E0%A6%9F%E0%A6%BF%E0%A6%B8%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0-%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF-%E0%A6%B8%E0%A7%9F%E0%A6%BE%E0%A6%AC%E0%A6%BF%E0%A6%A8-%E0%A6%A4%E0%A7%87%E0%A6%B2-%E0%A6%93-%E0%A6%AE%E0%A6%B8%E0%A7%81%E0%A6%B0-%E0%A6%A1%E0%A6%BE%E0%A6%B2-%E0%A6%95%E0%A6%BF%E0%A6%A8%E0%A6%9B%E0%A7%87-%E0%A6%B8%E0%A6%B0%E0%A6%95%E0%A6%BE%E0%A6%B0"))
 
 try:
-    with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\DBC_News\\dbc_news_data.json", 'r', encoding='utf-8') as file:
+    with open("F:\\JOB_FILES\\Spectrum_IT\\Spectrum_IT\\DBC_News\\dbc_news_data.json", 'r', encoding='utf-8') as file:
         existing_data = json.load(file)
 except FileNotFoundError:
     existing_data = []  # Initialize empty if file doesn't exist
@@ -277,7 +278,7 @@ except FileNotFoundError:
 existing_url = {item['url'] for item in existing_data}
 
 # Loading unique links
-with open('C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\DBC_News\\sample_news_links.json', encoding = "utf-8") as f:
+with open('F:\\JOB_FILES\\Spectrum_IT\\Spectrum_IT\\DBC_News\\sample_news_links.json', encoding = "utf-8") as f:
     d = json.load(f)
 
 all_data = []
@@ -287,6 +288,7 @@ for i in d:
     subcategory = i['news_subcategory']
     scraper = NewsScraper()
     if url not in existing_url:
+        print(url)
         news_data = scraper.scrape_news_data(url, type, subcategory)
         all_data.append(news_data)
 
@@ -294,7 +296,7 @@ for i in d:
 
 # Append new data to existing data and write back to JSON
 existing_data.extend(all_data)
-with open("C:\\Users\\arwen\Desktop\\Newspaper Scraping\\Spectrum_IT\\DBC_News\\dbc_news_data.json", 'w', encoding='utf-8') as f:
+with open("F:\\JOB_FILES\\Spectrum_IT\\Spectrum_IT\\DBC_News\\dbc_news_data.json", 'w', encoding='utf-8') as f:
     json.dump(existing_data, f, ensure_ascii=False, indent=4)
 
 print(f"Saved {len(all_data)} unique links to dailybd_data.json")
