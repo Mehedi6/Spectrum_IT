@@ -115,19 +115,17 @@ class NewsScraper:
     def scrape_news_data(self, url, news_type, subcategory):
         # Configure ChromeDriver
         chrome_options = Options()
-        chrome_options.add_argument("--headless")  # Run in headless mode
-        chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
-        chrome_options.add_argument("--no-sandbox")  # Disable sandbox for restricted environments
-        chrome_options.add_argument("--disable-dev-shm-usage")  # Avoid dev/shm issues (useful in Docker)
-        chrome_options.add_argument("--window-size=1920,1080")  # Set window size (useful in headless mode)
-        chrome_options.add_argument("--use-gl=swiftshader")  # Force software GL rendering
-        chrome_options.add_argument("--disable-software-rasterizer")  # Ensure software rendering is used
-        chrome_options.add_argument("--disable-webgl")  # Disable WebGL
-        chrome_options.add_argument("--disable-accelerated-2d-canvas")  # Disable hardware acceleration for 2D canvas
-        chrome_options.add_argument("--disable-gpu-sandbox")  # Disable GPU sandboxing
+        # chrome_options.add_argument("--headless")  # Run in headless mode
+        chrome_options.add_argument("--disable-gpu")  # Disable GPU hardware acceleration
+        chrome_options.add_argument("--disable-dev-shm-usage")  # Avoid shared memory issues
+        chrome_options.add_argument("--no-sandbox")  # Required for certain environments
+        chrome_options.add_argument("--use-gl=swiftshader")  # Force software rendering
+        chrome_options.add_argument("--disable-software-rasterizer")  # Prevent GPU fallback
+        chrome_options.add_argument("--disable-webgl")  # Disable WebGL entirely
+        chrome_options.add_argument("--window-size=1920,1080")  # Set window size to avoid resolution-related errors
+        chrome_options.add_argument('--disable-gpu-compositing')
+        chrome_options.add_argument('--disable-accelerated-2d-canvas')
 
-        chrome_options.add_argument("--enable-logging")
-        chrome_options.add_argument("--v=1")  # Set verbosity to 1 for logging
 
         driver = webdriver.Chrome(service=Service(), options=chrome_options)
 
@@ -136,7 +134,7 @@ class NewsScraper:
         try:
             driver.get(url)
             driver.maximize_window()
-            time.sleep(2)
+            time.sleep(3)
         except:
             return
         
