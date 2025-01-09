@@ -1,0 +1,5 @@
+url_path = /home/Ahmed001/airflow/scraper/jonokontho/news_links.json
+
+chrome_options.binary_location = "/usr/bin/google-chrome"  # Path to Chrome binary
+
+driver = webdriver.Chrome(service=Service("/usr/local/bin/chromedriver"), options=chrome_options)
